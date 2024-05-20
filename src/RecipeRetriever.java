@@ -48,6 +48,11 @@ public class RecipeRetriever {
     }
 
 
+    /**
+     * 
+     * @param ingredient Ingredient that should be used in 
+     * @return a list of recipes
+     */
     public static Recipe[] recipeFromIngredient(String ingredient) {
         JsonNode recipesJson = getReponse(RECIPE_URL + ingredient);
         // JsonNode recipe = recipes.get(0);

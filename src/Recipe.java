@@ -21,10 +21,10 @@ public class Recipe {
      */
     public Recipe(JsonNode jsonNode) {
         System.out.println(jsonNode);
-        name = jsonNode.get("title").toString();
-        ingredients = jsonNode.get("ingredients").toString();
-        servings = jsonNode.get("servings").toString();
-        instructions = jsonNode.get("instructions").toString();        
+        name = jsonNode.get("title").toString().replace("\"", "");
+        ingredients = jsonNode.get("ingredients").toString().replace("\"", "");
+        servings = jsonNode.get("servings").toString().replace("\"", "");
+        instructions = jsonNode.get("instructions").toString().replace("\"", "");        
     }
 
     /**
