@@ -49,12 +49,13 @@ public class RecipeRetriever {
 
 
     /**
-     * 
-     * @param ingredient Ingredient that should be used in 
+     * Obtains list of recipes based on query
+     * @param query Ingredient that should be used in 
      * @return a list of recipes
      */
-    public static Recipe[] recipeFromIngredient(String ingredient) {
-        JsonNode recipesJson = getReponse(RECIPE_URL + ingredient);
+    public static Recipe[] getRecipeList(String query) {
+        String queryString = query.replace(" ", "%20");
+        JsonNode recipesJson = getReponse(RECIPE_URL + query);
         // JsonNode recipe = recipes.get(0);
         Recipe[] recipes = new Recipe[recipesJson.size()];
         for (int i = 0; i < recipesJson.size(); i++) {
@@ -62,5 +63,4 @@ public class RecipeRetriever {
         }
         return recipes;
     }
-
 }

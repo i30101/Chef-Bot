@@ -40,6 +40,23 @@ public class Recipe {
         servings = servsString;
         instructions = insString;
     }
+    
+
+    public String getName() {
+        return name;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public String getServings() {
+        return servings;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
 
 
     @Override
