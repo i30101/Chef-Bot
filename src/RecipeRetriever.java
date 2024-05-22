@@ -30,12 +30,10 @@ public class RecipeRetriever {
      */
     private static JsonNode getReponse(String requestURL) {
         try {
-            System.out.println(requestURL);
             URL url = new URL(requestURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("accept", "application/json");
             connection.setRequestProperty("X-API-Key", API_KEY);
-
             InputStream responseStream = connection.getInputStream();
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(responseStream);
@@ -55,8 +53,7 @@ public class RecipeRetriever {
      */
     public static Recipe[] getRecipeList(String query) {
         String queryString = query.replace(" ", "%20");
-        JsonNode recipesJson = getReponse(RECIPE_URL + query);
-        // JsonNode recipe = recipes.get(0);
+        JsonNode recipesJson = getReponse(RECIPE_URL + queryString);
         Recipe[] recipes = new Recipe[recipesJson.size()];
         for (int i = 0; i < recipesJson.size(); i++) {
             recipes[i] = new Recipe(recipesJson.get(i));

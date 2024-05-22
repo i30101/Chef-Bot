@@ -9,11 +9,16 @@
 import java.util.*;
 import java.io.*;
 import javax.swing.DefaultListModel;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 
 
 public class FileManager {
     private static final String INGREDIENTS_PATH = "./data/ingredients.txt";
-
+    private static final String RECIPES_PATH = "./data/recipes.json";
 
     /**
      * Reads saved ingredients
@@ -32,11 +37,11 @@ public class FileManager {
             System.out.println("Could not read ingredients file");
         }
         
-        return null;
+        return ingredients;
     }
 
     /**
-     * Writes ingredients to text file
+     * Saves ingredients to text file
      * @param ingredients what is to be written
      */
     public static void writeIngredients(DefaultListModel<String> ingredients) {
@@ -64,6 +69,49 @@ public class FileManager {
             } catch (IOException e) {
                 System.out.println("Error closing writer: " + e);
             }
+        }
+    }
+
+    /**
+     * Reads saved recipes
+     * @return list of recipes that were saved
+     */
+    public static DefaultListModel<Recipe> readRecipes() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = mapper.readTree(new File(RECIPES_PATH));
+            DefaultListModel<Recipe> recipes = new DefaultListModel<>();
+            for (int i = 0; i < jsonNode.size(); i++) {
+                recipes.addElement(new Recipe(jsonNode.get(i)));
+            }
+            return recipes;
+        } catch (Exception e) {
+            System.out.println("Error reading recipes file");
+        }
+        return null;
+    }
+
+    /**
+     * Saves recipes to JSON file
+     * @param recipes recipes to be saved
+     */
+    public static void writeRecipes(DefaultListModel<Recipe> recipes) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+            ArrayList<ObjectNode> jsonList = new ArrayList<ObjectNode>();
+            for (int i = 0; i < recipes.size(); i++) {
+                ObjectNode jsonNode = mapper.createObjectNode();
+                Recipe elementAt = recipes.elementAt(i);
+                jsonNode.put("title", elementAt.getName());
+                jsonNode.put("ingredients", elementAt.getIngredients());
+                jsonNode.put("servings", elementAt.getServings());
+                jsonNode.put("instructions", elementAt.getInstructions());
+                jsonList.add(jsonNode);
+                mapper.writeValue(new File(RECIPES_PATH), jsonList);
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing file");
         }
     }
 }

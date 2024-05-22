@@ -6,7 +6,7 @@
  * Recipe object to simplify recipe storing
  */
 
-import com.fasterxml.jackson.databind.JsonNode;;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class Recipe {
     private String name;
@@ -20,7 +20,6 @@ public class Recipe {
      * @param jsonNode JSON object
      */
     public Recipe(JsonNode jsonNode) {
-        System.out.println(jsonNode);
         name = jsonNode.get("title").toString().replace("\"", "");
         ingredients = jsonNode.get("ingredients").toString().replace("\"", "");
         servings = jsonNode.get("servings").toString().replace("\"", "");

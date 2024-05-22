@@ -3,7 +3,7 @@
  * @version 2.0.0
  * @since 20 May 2024
  * 
- * GUI driver for ChefGPT
+ * GUI driver for Recipe Bot
  */
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class GUIDriver extends JFrame {
     private DefaultListModel<Recipe> recipeListModel;
     private DefaultListModel<Recipe> searchListModel;
 
-    public GUIDriver() {
+    public GUIDriver(DefaultListModel<String> savedIngredients, DefaultListModel<Recipe> savedRecipes) {
         setTitle("ChefGPT");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,7 +30,8 @@ public class GUIDriver extends JFrame {
 
         // tab 1: saved ingredients
         JPanel ingredientsPanel = new JPanel(new BorderLayout());
-        ingredListModel = new DefaultListModel<>();
+        // ingredListModel = new DefaultListModel<>();
+        ingredListModel = savedIngredients;
         JList<String> ingredientList = new JList<>(ingredListModel);
         ingredientsPanel.add(new JScrollPane(ingredientList), BorderLayout.CENTER);
 
@@ -73,15 +74,16 @@ public class GUIDriver extends JFrame {
 
         // tab 2: saved recipes
         JPanel recipesPanel = new JPanel(new BorderLayout());
-        recipeListModel = new DefaultListModel<>();
+        // recipeListModel = new DefaultListModel<>();
+        recipeListModel = savedRecipes;
         JList<Recipe> recipeList = new JList<>(recipeListModel);
         recipesPanel.add(new JScrollPane(recipeList), BorderLayout.CENTER);
         
         JPanel recipeButtonsPanel = new JPanel();
-        JTextField recipeField = new JTextField(15);
+        // JTextField recipeField = new JTextField(15);
         JButton removeRecipeButton = new JButton("Remove Recipe");
         
-        recipeButtonsPanel.add(recipeField);
+        // recipeButtonsPanel.add(recipeField);
         recipeButtonsPanel.add(removeRecipeButton);
         recipesPanel.add(recipeButtonsPanel, BorderLayout.SOUTH);
 
@@ -91,6 +93,7 @@ public class GUIDriver extends JFrame {
                 Recipe selectedRecipe = recipeList.getSelectedValue();
                 if (selectedRecipe != null) {
                     recipeListModel.removeElement(selectedRecipe);
+                    FileManager.writeRecipes(recipeListModel);
                 }
             }
         });
@@ -150,6 +153,7 @@ public class GUIDriver extends JFrame {
                 Recipe selectedRecipe = searchList.getSelectedValue();
                 if (selectedRecipe != null) {
                     recipeListModel.addElement(selectedRecipe);
+                    FileManager.writeRecipes(recipeListModel);
                 }
             }
         });
@@ -171,9 +175,10 @@ public class GUIDriver extends JFrame {
     }
 
     private void showRecipeDetails(Recipe recipe) {
-        JTextArea textArea = new JTextArea();
-        textArea.setText("Ingredients: " + recipe.getIngredients());
-        textArea.append("\nInstructions: " + recipe.getInstructions());
+        JTextArea textArea = new JTextArea(25, 100);
+        textArea.setLineWrap(true);
+        textArea.setText("Ingredients: \n" + recipe.getIngredients().replace("|", "\n"));
+        textArea.append("\n\nInstructions: " + recipe.getInstructions());
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         JOptionPane.showMessageDialog(null, scrollPane, recipe.getName(), JOptionPane.INFORMATION_MESSAGE);
@@ -192,7 +197,7 @@ public class GUIDriver extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new GUIDriver().setVisible(true);
+                new GUIDriver(FileManager.readIngredients(), FileManager.readRecipes()).setVisible(true);
             }
         });
     }
