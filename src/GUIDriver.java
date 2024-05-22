@@ -21,7 +21,7 @@ public class GUIDriver extends JFrame {
     private DefaultListModel<Recipe> searchListModel;
 
     public GUIDriver(DefaultListModel<String> savedIngredients, DefaultListModel<Recipe> savedRecipes) {
-        setTitle("ChefGPT");
+        setTitle("Chef-Bot");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
