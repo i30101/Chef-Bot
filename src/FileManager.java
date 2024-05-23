@@ -108,8 +108,8 @@ public class FileManager {
                 jsonNode.put("servings", elementAt.getServings());
                 jsonNode.put("instructions", elementAt.getInstructions());
                 jsonList.add(jsonNode);
-                mapper.writeValue(new File(RECIPES_PATH), jsonList);
             }
+            mapper.writeValue(new File(RECIPES_PATH), jsonList);
         } catch (IOException e) {
             System.out.println("Error writing file");
         }
