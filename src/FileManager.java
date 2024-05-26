@@ -62,13 +62,6 @@ public class FileManager {
             writer.close();
         } catch (IOException e) {
             System.out.println("Error writing ingredients file");
-        } finally {
-            try {
-                writer.flush();
-                writer.close();
-            } catch (IOException e) {
-                System.out.println("Error closing writer: " + e);
-            }
         }
     }
 
