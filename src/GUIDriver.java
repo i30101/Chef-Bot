@@ -99,7 +99,6 @@ public class GUIDriver extends JFrame {
 
         // tab 2: saved ingredients
         JPanel ingredientsPanel = new JPanel(new BorderLayout());
-        // ingredListModel = new DefaultListModel<>();
         JList<String> ingredientList = new JList<>(ingredListModel);
         ingredientsPanel.add(new JScrollPane(ingredientList), BorderLayout.CENTER);
 
@@ -142,15 +141,12 @@ public class GUIDriver extends JFrame {
 
         // tab 3: saved recipes
         JPanel recipesPanel = new JPanel(new BorderLayout());
-        // recipeListModel = new DefaultListModel<>();
         JList<Recipe> recipeList = new JList<>(recipeListModel);
         recipesPanel.add(new JScrollPane(recipeList), BorderLayout.CENTER);
         
         JPanel recipeButtonsPanel = new JPanel();
-        // JTextField recipeField = new JTextField(15);
         JButton removeRecipeButton = new JButton("Remove Recipe");
         
-        // recipeButtonsPanel.add(recipeField);
         recipeButtonsPanel.add(removeRecipeButton);
         recipesPanel.add(recipeButtonsPanel, BorderLayout.SOUTH);
 
@@ -168,10 +164,10 @@ public class GUIDriver extends JFrame {
         // show more details about recipe
         recipeList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                JList list = (JList) evt.getSource();
+                JList<Recipe> list = (JList<Recipe>) evt.getSource();
                 if (evt.getClickCount() == 2) {
                     int index = list.locationToIndex(evt.getPoint());
-                    Recipe selectedRecipe = (Recipe) list.getModel().getElementAt(index);
+                    Recipe selectedRecipe = list.getModel().getElementAt(index);
                     showRecipeDetails(selectedRecipe);
                 }
             }
@@ -241,7 +237,7 @@ public class GUIDriver extends JFrame {
         // show more details about recipe
         searchList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                JList list = (JList) evt.getSource();
+                JList<Recipe> list = (JList<Recipe>) evt.getSource();
                 if (evt.getClickCount() == 2) {
                     int index = list.locationToIndex(evt.getPoint());
                     Recipe selectedRecipe = (Recipe) list.getModel().getElementAt(index);
